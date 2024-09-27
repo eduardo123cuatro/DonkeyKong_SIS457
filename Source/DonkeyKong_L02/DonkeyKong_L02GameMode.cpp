@@ -25,7 +25,7 @@ void ADonkeyKong_L02GameMode::BeginPlay()
 	GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Yellow, TEXT("Creando plataforma"));
 	
 	// Definir una nueva posición de spawn para el personaje
-	FVector NuevaPosicionDeSpawn = FVector(1200.0f, 1200.0f, 3600.0f);  // Ajusta la altura (Z) y otras coordenadas
+	FVector NuevaPosicionDeSpawn = FVector(1200.0f, 1200.0f, 5000.0f);  // Ajusta la altura (Z) y otras coordenadas
 	FRotator RotacionSpawn = FRotator(0.0f, 0.0f, 0.0f);  // Rotación sin cambios
 
 	// Obtener el personaje controlado
@@ -50,7 +50,7 @@ void ADonkeyKong_L02GameMode::BeginPlay()
 	FTransform SpawnLocationCP;
 	float anchoComponentePlataforma = 260.0f;
 	float incrementoAltoComponentePlataforma = -55.0f;
-	float incrementoAltoEntrePisos = 1200.0f;
+	float incrementoAltoEntrePisos = 1000.0f;
 	float incrementoInicioPiso = 100.0f;    
 
 	// Variable para la posición final del módulo 5
@@ -67,7 +67,7 @@ void ADonkeyKong_L02GameMode::BeginPlay()
 		/*	bool esPiso2o4 = (npp == 1 || npp == 3);
 		
 			if (ncp == 0 || ncp == 1 || ncp == 4 || (esPiso2o4 && (ncp == 2 || ncp == 3))) {*/
-			if (ncp == 2 || ncp == 3) {
+			if (ncp == 0 || ncp == 1 || ncp == 4 || ncp == 5 || ncp == 6 || ncp == 7 || ncp == 8 || ncp == 9) {
 				SpawnLocationCP.SetLocation(FVector(posicionInicial.X, posicionInicial.Y + anchoComponentePlataforma * ncp, posicionInicial.Z));
 				AcomponentePlataforma* nuevaPlataforma = GetWorld()->SpawnActor<AcomponentePlataforma>(AcomponentePlataforma::StaticClass(), SpawnLocationCP);
 				componentesPlataforma.Add(nuevaPlataforma);
@@ -75,7 +75,7 @@ void ADonkeyKong_L02GameMode::BeginPlay()
 				// Crear una clave única para el TMap utilizando los índices npp (piso) y ncp (módulo)
 				FString clave = FString::Printf(TEXT("Piso%d_Modulo%d"), npp + 1, ncp + 1);
 				MapPlataformas.Add(clave, nuevaPlataforma);
-			
+
 				// Actualizar la posición del último módulo del piso 5
 				if (npp == 10 && ncp == 10) {
 					posicionUltimoModulo5 = SpawnLocationCP.GetLocation();
@@ -106,15 +106,15 @@ void ADonkeyKong_L02GameMode::BeginPlay()
 						nuevaPlataforma->SetActorLocation(nuevaPosicion);
 						}, 0.01f, true); // Intervalo ajustado a 0.01 segundos para hacerlo más lento y suave
 				}
-
+			}
 				if (ncp < 10) {
 					posicionInicial.Z = posicionInicial.Z + incrementoAltoComponentePlataforma;
 				}
-			}
+			
 		}
 
-		posicionInicial.Z = posicionInicial.Z + incrementoAltoEntrePisos;
-		posicionInicial.Y = posicionInicial.Y + incrementoInicioPiso;
+		     posicionInicial.Z = posicionInicial.Z + incrementoAltoEntrePisos;
+		     posicionInicial.Y = posicionInicial.Y + incrementoInicioPiso;
 	}
 
 	// Mostrar en pantalla las claves y las posiciones de las plataformas para debug
